@@ -19,13 +19,17 @@ export class UsersService {
     }
 
     async getUser(id: string) {
-        const user = await this.userRepository.findOne({ where: { id } });
+        const user = await this.userRepository.findOne({
+            where: { id },
+            relations: ['requests', 'questions', 'responses', 'products'],
+        });
 
         if (!user) {
             throw new HttpException('Invalid user', HttpStatus.BAD_REQUEST);
         }
 
+        console.log(user);
+
         return user.toResponseObject(false);
     }
-
 }

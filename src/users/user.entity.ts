@@ -5,9 +5,14 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     BeforeInsert,
+    OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { RequestEntity } from 'src/requests/request.entity';
+import { QuestionEntity } from 'src/questions/question.entity';
+import { ResponseEntity } from './../responses/response.entity';
+import { ProductEntity } from 'src/products/product.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -38,6 +43,34 @@ export class UserEntity {
     @UpdateDateColumn()
     updated: Date;
 
+    @OneToMany(
+        () => RequestEntity,
+        r => r.author,
+        { cascade: true },
+    )
+    requests: RequestEntity[];
+
+    @OneToMany(
+        () => QuestionEntity,
+        q => q.author,
+        { cascade: true },
+    )
+    questions: QuestionEntity[];
+
+    @OneToMany(
+        () => ResponseEntity,
+        r => r.author,
+        { cascade: true },
+    )
+    responses: ResponseEntity[];
+
+    @OneToMany(
+        () => ProductEntity,
+        p => p.author,
+        { cascade: true },
+    )
+    products: ProductEntity[];
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password, 10);
@@ -60,6 +93,11 @@ export class UserEntity {
         if (!this.emailHidden) {
             resObj.email = email;
         }
+
+        if (this.requests) resObj.requests = this.requests.map(r => r.id);
+        if (this.questions) resObj.questions = this.questions.map(r => r.id);
+        if (this.responses) resObj.responses = this.responses.map(r => r.id);
+        if (this.products) resObj.products = this.products.map(r => r.id);
 
         return resObj;
     }

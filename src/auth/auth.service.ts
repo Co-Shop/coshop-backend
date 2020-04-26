@@ -57,6 +57,8 @@ export class AuthService {
         user.password = password;
         user.email = email;
         user.emailHidden = true;
+        user.requests = [];
+        user.questions = [];
         await this.userRepository.save(user);
 
         return user.toResponseObject();
