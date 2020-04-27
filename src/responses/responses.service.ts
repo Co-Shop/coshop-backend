@@ -6,6 +6,7 @@ import { UserEntity } from 'src/users/user.entity';
 import { ResponseDTO } from './response.dto';
 import UniqueID from 'nodejs-snowflake';
 import { ShopEntity } from 'src/shops/shop.entity';
+import { QuestionEntity } from 'src/questions/question.entity';
 
 const uid = new UniqueID({
     customEpoch: 1577836800,
@@ -21,6 +22,8 @@ export class ResponsesService {
         private readonly userRepository: Repository<UserEntity>,
         @InjectRepository(ShopEntity)
         private readonly shopRepository: Repository<ShopEntity>,
+        @InjectRepository(QuestionEntity)
+        private readonly questionRepository: Repository<QuestionEntity>,
     ) {}
 
     async getResponse(id: string) {
@@ -28,11 +31,14 @@ export class ResponsesService {
             where: {
                 id,
             },
-            relations: ['shop', 'author'],
+            relations: ['shop', 'author', 'question'],
         });
 
         if (!response)
-            throw new HttpException('Invalid response!', HttpStatus.BAD_REQUEST);
+            throw new HttpException(
+                'Invalid response!',
+                HttpStatus.BAD_REQUEST,
+            );
 
         return {
             ...response,
@@ -52,26 +58,39 @@ export class ResponsesService {
 
         const shop = await this.shopRepository.findOne({
             where: {
-                id: shopId
-            }
-        })
+                id: shopId,
+            },
+        });
 
         if (!shop)
             throw new HttpException('Invalid shop!', HttpStatus.BAD_REQUEST);
+
+        const question = await this.questionRepository.findOne({
+            where: {
+                id: data.question_id,
+            },
+        });
+
+        if (!question)
+            throw new HttpException(
+                'Invalid question!',
+                HttpStatus.BAD_REQUEST,
+            );
 
         const response = await this.responseRepository.create(data);
 
         response.author = user;
         response.id = uid.getUniqueID() as string;
         response.shop = shop;
+        response.question = question;
 
         await this.responseRepository.save(response);
 
         return await {
-            ...this.responseRepository.findOne({
+            ...(await this.responseRepository.findOne({
                 where: { id: response.id },
-                relations: ['shop', 'author'],
-            }),
+                relations: ['shop', 'author', 'question'],
+            })),
             author: user.toResponseObject(false),
         };
     }
@@ -88,7 +107,7 @@ export class ResponsesService {
 
         let response = await this.responseRepository.findOne({
             where: { id },
-            relations: ['shop', 'author'],
+            relations: ['shop', 'author', 'question'],
         });
 
         if (!response)
@@ -97,11 +116,11 @@ export class ResponsesService {
                 HttpStatus.BAD_REQUEST,
             );
 
-        await this.responseRepository.update(id, data);
+        await this.responseRepository.update(id, { content: data.content });
 
         response = await this.responseRepository.findOne({
             where: { id },
-            relations: ['shop', 'author'],
+            relations: ['shop', 'author', 'question'],
         });
 
         response.author = response.author.toResponseObject(false);
@@ -121,7 +140,7 @@ export class ResponsesService {
 
         const response = await this.responseRepository.findOne({
             where: { id },
-            relations: ['shop', 'author'],
+            relations: ['shop', 'author', 'question'],
         });
 
         if (!response)

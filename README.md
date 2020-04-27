@@ -336,3 +336,413 @@ Example response
     }
 }
 ```
+
+## Questions
+
+### `POST /questions/:request_id/new`
+
+Requires token in Authorization header
+
+Example request body
+```json
+{
+	"question": "Is it available in big amounts"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653925003957358592",
+    "question": "Is it available in big amounts",
+    "created": "2020-04-27T14:19:48.102Z",
+    "request": {
+        "id": "6653700054994898944",
+        "lat": "34.25324",
+        "lon": "12.43293",
+        "range": 500,
+        "created": "2020-04-26T23:25:56.928Z",
+        "expires": "2020-04-26"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "answers": []
+}
+```
+
+### `POST /questions/:id/update`
+
+Requires token in Authorization header & user to be author of the question
+
+Example request body
+```json
+{
+	"question": "Is it available in big amounts in Walmart"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653925003957358592",
+    "question": "Is it available in big amounts in Walmart",
+    "created": "2020-04-27T14:19:48.102Z",
+    "request": {
+        "id": "6653700054994898944",
+        "lat": "34.25324",
+        "lon": "12.43293",
+        "range": 500,
+        "created": "2020-04-26T23:25:56.928Z",
+        "expires": "2020-04-26"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "answers": []
+}
+```
+
+### `GET /questions/:id`
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653925003957358592",
+    "question": "Is it available in big amounts in Walmart",
+    "created": "2020-04-27T14:19:48.102Z",
+    "request": {
+        "id": "6653700054994898944",
+        "lat": "34.25324",
+        "lon": "12.43293",
+        "range": 500,
+        "created": "2020-04-26T23:25:56.928Z",
+        "expires": "2020-04-26"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "answers": []
+}
+```
+
+### `DELETE /questions/:id`
+
+Requires token in Authorization header & user to be author of the question
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653925003957358592",
+    "question": "Is it available in big amounts in Walmart",
+    "created": "2020-04-27T14:19:48.102Z",
+    "request": {
+        "id": "6653700054994898944",
+        "lat": "34.25324",
+        "lon": "12.43293",
+        "range": 500,
+        "created": "2020-04-26T23:25:56.928Z",
+        "expires": "2020-04-26"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "answers": []
+}
+```
+
+## Responses
+
+### `POST /responses/:shop_id/new`
+
+Requires token in Authorization header
+
+Example request body
+```json
+{
+    "content": "It is available in big amounts in Lidl",
+	"question_id": "6653925003957358592"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653927685325574144",
+    "content": "It is available in big amounts in Lidl",
+    "shop": {
+        "id": "6653693803443507200",
+        "name": "Lidl",
+        "lat": "34.25325",
+        "lon": "12.43294",
+        "created": "2020-04-26T23:01:06.376Z"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "question": {
+        "id": "6653925003957358592",
+        "question": "Is it available in big amounts in Walmart",
+        "created": "2020-04-27T14:19:48.102Z"
+    }
+}
+```
+
+### `POST /responses/:id/update`
+
+Requires token in Authorization header & user to be author of the response
+
+Example request body
+```json
+{
+    "content": "It's available in big amounts in Lidl"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653927685325574144",
+    "content": "It's available in big amounts in Lidl",
+    "shop": {
+        "id": "6653693803443507200",
+        "name": "Lidl",
+        "lat": "34.25325",
+        "lon": "12.43294",
+        "created": "2020-04-26T23:01:06.376Z"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "question": {
+        "id": "6653925003957358592",
+        "question": "Is it available in big amounts in Walmart",
+        "created": "2020-04-27T14:19:48.102Z"
+    }
+}
+```
+
+### `GET /responses/:id`
+
+Requires token in Authorization header & user to be author of the response
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653927685325574144",
+    "content": "It's available in big amounts in Lidl",
+    "shop": {
+        "id": "6653693803443507200",
+        "name": "Lidl",
+        "lat": "34.25325",
+        "lon": "12.43294",
+        "created": "2020-04-26T23:01:06.376Z"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "question": {
+        "id": "6653925003957358592",
+        "question": "Is it available in big amounts in Walmart",
+        "created": "2020-04-27T14:19:48.102Z"
+    }
+}
+```
+
+### `DELETE /responses/:id`
+
+Requires token in Authorization header & user to be author of the response
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653927685325574144",
+    "content": "It's available in big amounts in Lidl",
+    "shop": {
+        "id": "6653693803443507200",
+        "name": "Lidl",
+        "lat": "34.25325",
+        "lon": "12.43294",
+        "created": "2020-04-26T23:01:06.376Z"
+    },
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    },
+    "question": {
+        "id": "6653925003957358592",
+        "question": "Is it available in big amounts in Walmart",
+        "created": "2020-04-27T14:19:48.102Z"
+    }
+}
+```
+
+## Products
+
+### `POST /products/:shop_id/new`
+
+#### Products are auto-created when creating a request
+
+Requires token in Authorization header
+
+Example request body
+```json
+{
+    "name": "A Cheesecake",
+    "producer": "A cheesecake producer"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653955137154306048",
+    "name": "A Cheesecake",
+    "producer": "A cheesecake producer",
+    "created": "2020-04-27T16:19:32.344Z",
+    "shops": [
+        {
+            "id": "6653693803443507200",
+            "name": "Lidl",
+            "lat": "34.25325",
+            "lon": "12.43294",
+            "created": "2020-04-26T23:01:06.376Z"
+        }
+    ],
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    }
+}
+```
+
+### `POST /products/:id/update`
+
+Requires token in Authorization header & user to be author of the product
+
+Example request body
+```json
+{
+    "name": "A Brownie"
+}
+```
+
+Example response
+```json
+{
+    "id": "6653955137154306048",
+    "name": "A Brownie",
+    "producer": "A cheesecake producer",
+    "created": "2020-04-27T16:19:32.344Z",
+    "shops": [
+        {
+            "id": "6653693803443507200",
+            "name": "Lidl",
+            "lat": "34.25325",
+            "lon": "12.43294",
+            "created": "2020-04-26T23:01:06.376Z"
+        }
+    ],
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    }
+}
+```
+
+### `GET /product/:id`
+
+Requires token in Authorization header & user to be author of the product
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653955137154306048",
+    "name": "A Brownie",
+    "producer": "A cheesecake producer",
+    "created": "2020-04-27T16:19:32.344Z",
+    "shops": [
+        {
+            "id": "6653693803443507200",
+            "name": "Lidl",
+            "lat": "34.25325",
+            "lon": "12.43294",
+            "created": "2020-04-26T23:01:06.376Z"
+        }
+    ],
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    }
+}
+```
+
+### `DELETE /responses/:id`
+
+Requires token in Authorization header & user to be author of the product
+
+Request body not required
+
+Example response
+```json
+{
+    "id": "6653955137154306048",
+    "name": "A Brownie",
+    "producer": "A cheesecake producer",
+    "created": "2020-04-27T16:19:32.344Z",
+    "shops": [
+        {
+            "id": "6653693803443507200",
+            "name": "Lidl",
+            "lat": "34.25325",
+            "lon": "12.43294",
+            "created": "2020-04-26T23:01:06.376Z"
+        }
+    ],
+    "author": {
+        "id": "6653686549000474624",
+        "username": "jas777",
+        "created": "2020-04-26T22:32:16.761Z",
+        "updated": "2020-04-26T22:32:16.761Z"
+    }
+}
+```

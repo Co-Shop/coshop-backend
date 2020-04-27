@@ -34,6 +34,8 @@ export class ProductsService {
         if (!product)
             throw new HttpException('Invalid product!', HttpStatus.BAD_REQUEST);
 
+        product.author = product.author.toResponseObject(false);
+
         return product;
     }
 
@@ -61,11 +63,12 @@ export class ProductsService {
         product.author = user;
         product.id = uid.getUniqueID() as string;
         product.shops = [shop];
+        product.requests = [];
 
         await this.productRepository.save(product);
 
         return await {
-            ...this.productRepository.findOne({
+            ...await this.productRepository.findOne({
                 where: { id: product.id },
                 relations: ['shops', 'author'],
             }),
@@ -94,7 +97,7 @@ export class ProductsService {
         await this.productRepository.update(id, data);
 
         return await {
-            ...this.productRepository.findOne({
+            ...await this.productRepository.findOne({
                 where: { id: product.id },
                 relations: ['shops', 'author'],
             }),

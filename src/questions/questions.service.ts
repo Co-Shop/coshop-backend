@@ -71,8 +71,8 @@ export class QuestionsService {
 
         await this.questionRepository.save(question);
 
-        return await {
-            ...this.questionRepository.findOne({
+        return {
+            ...await this.questionRepository.findOne({
                 where: { id: question.id },
                 relations: ['request', 'author', 'answers'],
             }),
@@ -142,6 +142,8 @@ export class QuestionsService {
 
         await this.questionRepository.delete(question.id);
 
+        question.author = user.toResponseObject(false);
+        
         return question;
     }
 }

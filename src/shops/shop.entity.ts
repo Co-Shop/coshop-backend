@@ -1,4 +1,4 @@
-import { Entity, PrimaryColumn, Column, CreateDateColumn, OneToMany, ManyToMany, JoinColumn } from "typeorm";
+import { Entity, PrimaryColumn, Column, CreateDateColumn, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { ResponseEntity } from "src/responses/response.entity";
 import { ProductEntity } from "src/products/product.entity";
 
@@ -30,7 +30,7 @@ export class ShopEntity {
         () => ProductEntity,
         p => p.shops,
     )
-    @JoinColumn()
+    @JoinTable()
     products: ProductEntity[];
 
 }
