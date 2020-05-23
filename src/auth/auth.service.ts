@@ -4,6 +4,10 @@ import UniqueID from 'nodejs-snowflake';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
+import { AuthDTO } from 'src/auth/auth.dto';
+import { VerificationEntity } from 'src/shared/verification.entity';
+import { MailerService } from '@nest-modules/mailer';
+import * as crypto from 'crypto';
 
 const uid = new UniqueID({
     customEpoch: 1577836800,
@@ -15,20 +19,23 @@ export class AuthService {
     constructor(
         @InjectRepository(UserEntity)
         private userRepository: Repository<UserEntity>,
+        @InjectRepository(VerificationEntity)
+        private verificationRepository: Repository<VerificationEntity>,
+        private readonly mailerService: MailerService
     ) {}
 
-    async login(data: UserDTO) {
-        const { username, password } = data;
+    async login(data: AuthDTO) {
+        const { email, password } = data;
 
         const user = await this.userRepository.findOne({
             where: {
-                username,
+                email,
             },
         });
 
         if (!user || !(await user.validatePassword(password))) {
             throw new HttpException(
-                'Invalid username/password',
+                'Invalid email/password',
                 HttpStatus.FORBIDDEN,
             );
         }
@@ -57,9 +64,28 @@ export class AuthService {
         user.password = password;
         user.email = email;
         user.emailHidden = true;
+        user.verified = false;
         user.requests = [];
         user.questions = [];
         await this.userRepository.save(user);
+
+        const verification = this.verificationRepository.create({
+            user: user.id,
+            code: crypto.randomBytes(64).toString('hex'),
+            email: email
+        });
+
+        this.verificationRepository.save(verification);
+
+        this.mailerService.sendMail({
+            to: `<${user.username}> ${user.email}`,
+            from: `<no-reply> noreply@coshop.org`,
+            subject: 'Email verification',
+            template: 'confirm',
+            context: {
+                link: `https://coshop.org/verify?code=${verification.code}`
+            }
+        });
 
         return user.toResponseObject();
     }

@@ -34,6 +34,12 @@ export class UserEntity {
     })
     email: string;
 
+    @Column('boolean')
+    verified: boolean;
+
+    @Column('boolean')
+    newsletter: boolean;
+
     @Column('text', { nullable: true })
     password: string;
 

@@ -1,18 +1,6 @@
-import {
-    IsString,
-    IsNotEmpty,
-    MaxLength,
-    MinLength,
-    IsAlphanumeric,
-    NotContains,
-    IsEmail,
-    IsBoolean,
-} from 'class-validator';
+import { IsString, IsNotEmpty, IsAlphanumeric, NotContains, MaxLength, MinLength, IsEmail } from "class-validator";
 
-export class UserDTO {
-    @IsString()
-    @IsNotEmpty()
-    username: string;
+export class AuthDTO {
 
     @IsString()
     @IsNotEmpty()
@@ -30,6 +18,4 @@ export class UserDTO {
     @IsString()
     email: string;
 
-    @IsBoolean()
-    newsletter: boolean;
 }

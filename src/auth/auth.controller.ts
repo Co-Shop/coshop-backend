@@ -11,6 +11,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { UserDTO } from 'src/users/user.dto';
 import { AuthService } from './auth.service';
+import { AuthDTO } from 'src/auth/auth.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,7 +25,7 @@ export class AuthController {
 
     @Post('login')
     @UsePipes(new ValidationPipe())
-    async login(@Body() data: UserDTO) {
+    async login(@Body() data: AuthDTO) {
         return await this.authService.login(data);
     }
 
