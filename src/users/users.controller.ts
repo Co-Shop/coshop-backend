@@ -3,9 +3,12 @@ import {
     Get,
     Param,
     Query,
-    Post
+    Post,
+    UseGuards
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { User } from './user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -25,5 +28,11 @@ export class UsersController {
     @Post('verify')
     async verifyUser(@Query('code') code: string) {
         return await this.userService.verifyUser(code);
+    }
+
+    @Post('resend')
+    @UseGuards(new AuthGuard())
+    async resendVerification(@User('id') id: string) {
+        return await this.userService.resendVerification(id);
     }
 }

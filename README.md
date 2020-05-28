@@ -13,7 +13,9 @@ Example request body
 {
 	"username": "jas777",
 	"password": "supercomplicatedpassword123",
-	"email": "example@mail.com"
+    "email": "example@mail.com",
+    "emailHidden": true,
+    "newsletter": true
 }
 ```
 Example response
@@ -23,6 +25,8 @@ Example response
     "username": "jas777",
     "created": "2020-04-26T22:32:16.761Z",
     "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTM2ODY1NDkwMDA0NzQ2MjQiLCJ1c2VybmFtZSI6Imphczc3NyIsImlhdCI6MTU4Nzk0MDMzMCwiZXhwIjoxNTg4NTQ1MTMwfQ.zBKlKD5iOHRr7yvE0BkZQowxe0UnxuQi0nmZqyaaUWc",
     "requests": [],
     "questions": []
@@ -34,9 +38,8 @@ Example response
 Example request body
 ```json
 {
-	"username": "jas777",
-	"password": "supercomplicatedpassword123",
-	"email": "example@mail.com"
+	"email": "example@mail.com",
+	"password": "supercomplicatedpassword123"
 }
 ```
 Example response
@@ -46,6 +49,8 @@ Example response
     "username": "jas777",
     "created": "2020-04-26T22:32:16.761Z",
     "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTM2ODY1NDkwMDA0NzQ2MjQiLCJ1c2VybmFtZSI6Imphczc3NyIsImlhdCI6MTU4Nzk0MDMzMCwiZXhwIjoxNTg4NTQ1MTMwfQ.zBKlKD5iOHRr7yvE0BkZQowxe0UnxuQi0nmZqyaaUWc"
 }
 ```
@@ -61,6 +66,8 @@ Example response
     "username": "jas777",
     "created": "2020-04-26T22:32:16.761Z",
     "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NTM2ODY1NDkwMDA0NzQ2MjQiLCJ1c2VybmFtZSI6Imphczc3NyIsImlhdCI6MTU4Nzk0MTIwNywiZXhwIjoxNTg4NTQ2MDA3fQ.vsFsoRDMZCOoxopPt2MJMDS_IUcdMEEgGPFX6dr_h_E"
 }
 ```
@@ -78,6 +85,50 @@ Example response
     "username": "jas777",
     "created": "2020-04-26T22:32:16.761Z",
     "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
+    "requests": [],
+    "questions": [],
+    "responses": [],
+    "products": []
+}
+```
+
+### `POST /users/verify?code=`
+
+No request body **nor** authentication required
+
+Example response
+```json
+{
+    "id": "6653686549000474624",
+    "username": "jas777",
+    "created": "2020-04-26T22:32:16.761Z",
+    "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
+    "requests": [],
+    "questions": [],
+    "responses": [],
+    "products": []
+}
+```
+
+### `POST /users/resend`
+
+Authentication required, no request body required
+
+**24h ratelimit!**
+
+Example response
+```json
+{
+    "id": "6653686549000474624",
+    "username": "jas777",
+    "created": "2020-04-26T22:32:16.761Z",
+    "updated": "2020-04-26T22:32:16.761Z",
+    "newsletter": true,
+    "verified": false,
     "requests": [],
     "questions": [],
     "responses": [],

@@ -31,5 +31,8 @@ export class UserDTO {
     email: string;
 
     @IsBoolean()
+    emailHidden: boolean;
+
+    @IsBoolean()
     newsletter: boolean;
 }

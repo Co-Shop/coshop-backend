@@ -83,13 +83,15 @@ export class UserEntity {
     }
 
     toResponseObject(showToken = true) {
-        const { id, username, email, created, updated } = this;
+        const { id, username, email, created, updated, newsletter, verified } = this;
 
         const resObj: any = {
             id,
             username,
             created,
             updated,
+            newsletter,
+            verified
         };
 
         if (showToken) {

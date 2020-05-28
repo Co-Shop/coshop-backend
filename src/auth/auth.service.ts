@@ -55,7 +55,7 @@ export class AuthService {
         if (user) {
             throw new HttpException(
                 'User already exists',
-                HttpStatus.BAD_REQUEST,
+                HttpStatus.FORBIDDEN,
             );
         }
 
@@ -63,7 +63,6 @@ export class AuthService {
         user.id = uid.getUniqueID() as string;
         user.password = password;
         user.email = email;
-        user.emailHidden = true;
         user.verified = false;
         user.requests = [];
         user.questions = [];
